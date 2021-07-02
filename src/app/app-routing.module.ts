@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: "govmap",
+    path: "",
     loadChildren: () => import('./govmap/govmap.module').then(m => m.GovMapModule)
   }];
 
