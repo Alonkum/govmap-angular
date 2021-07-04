@@ -14,3 +14,14 @@ export interface GovmapLayers {
   MunicipalAuthorities: object;
 
 }
+
+export interface DynamicLayer {
+  id: number;
+  name: string;
+  source: { type: string, mapLayerId: number },
+  minScale: number;
+  maxScale: number;
+}
+
+
+

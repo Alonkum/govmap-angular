@@ -1,4 +1,6 @@
 <!-- <div *ngIf="apiLoaded"> -->
-<google-map height="780px" width="100%" [zoom]="zoom" [center]="center" [options]="options" (mapClick)="moveMap($event)" (mapMousemove)="move($event)" (wheel)="zoomInOut($event)"></google-map>
+<google-map #googleMap height="780px" width="100%" (idle)="onIdle($event);" [zoom]="zoom" [center]="center" [options]="options" (mapClick)="moveMap($event)" (mapMousemove)="move($event)">
+    <map-ground-overlay #googleMapOverlay [url]="groundOverlayImageUrl" [bounds]="imageBounds"></map-ground-overlay>
+</google-map>
 
 <!-- </div> -->

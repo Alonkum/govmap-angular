@@ -9,6 +9,8 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatIconModule} from '@angular/material/icon';
+import {MatCardModule} from '@angular/material/card';
+
 
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
@@ -28,7 +30,8 @@ import { HttpClientModule } from '@angular/common/http';
     MatCheckboxModule,
     MatFormFieldModule,
     HttpClientModule,
-    MatIconModule
+    MatIconModule,
+    MatCardModule
 
   ],
   providers: [],

@@ -1,8 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { GovmapApiResponse } from '../api.model';
+import { DynamicLayer, GovmapApiResponse } from '../api.model';
 
 @Injectable({
   providedIn: 'root'
@@ -11,10 +11,14 @@ export class GovmapService {
 
   apiToken: string;
   baseUrl: string;
-
+  restBaseUrl: string;
+  $layersChange: Subject<{ action: "add" | "remove", layer: any }> = new Subject();
+  dynamicLayers: Array<DynamicLayer> = [];
+  layersIDs: Array<number> = [];
   constructor(private httpClient: HttpClient) {
     this.apiToken = '5a4b8472-b95b-4687-8179-0ccb621c7990';
     this.baseUrl = 'https://ags.govmap.gov.il/';
+    this.restBaseUrl = 'https://ags.govmap.gov.il/proxy/proxy.ashx?http://govmap/arcgis/rest/services/AdditionalData/MapServer/export?';
   }
 
   getLayers(): Observable<any>  {
@@ -45,8 +49,25 @@ export class GovmapService {
   }
 
 
-  private post(endpoint: string, body: any): Observable<any> {
-    const headers: HttpHeaders = new HttpHeaders({ api_token: this.apiToken });
-    return this.httpClient.post(this.baseUrl + endpoint, body, {headers, responseType: 'json'});
-  }
+    private post(endpoint: string, body: any, baseUrl?: string): Observable<any> {
+      const headers: HttpHeaders = new HttpHeaders({ api_token: this.apiToken });
+      return this.httpClient.post( (baseUrl ?? this.baseUrl) + endpoint, body, {headers, responseType: 'json'});
+    }
+
+    changeLayers(queryString: string):  Observable<any> {
+      return this.post(queryString, {}, this.restBaseUrl);
+      // if (e.checked) {
+      //   const layer: DynamicLayer = {
+      //     id: item?.layerID,
+      //     minScale: item?.minScale,
+      //     maxScale: item?.maxScale,
+      //     name: item?.caption,
+      //     source: { type: "mapLayer", mapLayerId: item?.layerID }
+      //   };
+      //   this.govmap.dynamicLayers.push(layer);
+      //   this.govmap.layersIDs.push(layer.id);
+      // } else {
+      //   this.govmap.dynamicLayers.filter(layer => layer?.id === item?.layerID);
+      // }
+    }
 }
