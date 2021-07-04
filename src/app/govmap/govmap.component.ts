@@ -69,6 +69,9 @@ export class GovmapComponent implements OnInit {
     this.center = { lat: 32.06777253678647, lng: 34.77784472207902 };
     this.govmap.$layersChange.subscribe(change => this.changeLayers(change));
 
+
+    // Had an issue matching the coordinates of govmap and google maps the center and bounds in order to show the overlay in the right position
+    //  lat and lng are different sorry
     // navigator.geolocation.getCurrentPosition((position) => {
       // this.center = {
       //   lat: position.coords.latitude,
@@ -82,11 +85,13 @@ export class GovmapComponent implements OnInit {
 
   }
 
-  moveMap(event: google.maps.MapMouseEvent | google.maps.IconMouseEvent) {
+  moveMap(event: google.maps.MapMouseEvent | google.maps.IconMouseEvent | null) {
     this.previousPoint = this.center;
-    this.center = event.latLng.toJSON();
-
-    // this.imageUrlQueryParams.bbox = [...Object.values(this.previousPoint), ...Object.values(this.center)];
+    this.center = this.vcRef?.googleMap?.getCenter()?.toJSON() ?? this.center;
+    // const bounds: any = this.vcRef?.googleMap?.getBounds()?.toJSON();
+    // this.imageUrlQueryParams.bbox = Object.values(bounds);
+    // const queryString = new URLSearchParams(this.imageUrlQueryParams).toString();
+    // this.groundOverlayImageUrl = this.groundOverlayImageBaseUrl + queryString;
 
 
     // this.govmap.post()
